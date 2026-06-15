@@ -369,6 +369,33 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("enderchest")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.enderchest")) {
+                    sender.sendMessage("§7[§6EnderChest§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length > 0) {
+                    var plr = args[0];
+                    if (!plr.isEmpty()) {
+                        var target = getServer().getPlayer(plr);
+                        if (target != null) {
+                            player.openInventory(target.getEnderChest());
+                            sender.sendMessage("§7[§6EnderChest§7] §aShowing enderchest of §e" + target.getName().replace("§", "&") + "§a.");
+
+                            return true;
+                        }
+                    }
+                }
+
+                player.openInventory(player.getEnderChest());
+                sender.sendMessage("§7[§6EnderChest§7] §aYour enderchest has been opened.");
+            } else {
+                sender.sendMessage("§7[§6Heal§7] §cOnly executable by players");
+            }
+
+            return true;
         }
 
         return false;

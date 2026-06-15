@@ -50,6 +50,12 @@ commands:
     permission: gencore.heal
     permission-message: "§7[§6Heal§7] §cError: §4No permission"
     description: Restores your health and hunger.
+  enderchest:
+    usage: /enderchest
+    aliases: [enderchest, ec, echest]
+    permission: gencore.enderchest
+    permission-message: "§7[§6EnderChest§7] §cError: §4No permission"
+    description: Shows your enderchest.
 
 permissions:
   gencore.spawn:
@@ -67,4 +73,6 @@ permissions:
   gencore.banhammer:
     default: op
   gencore.heal:
+    default: op
+  gencore.enderchest:
     default: op
