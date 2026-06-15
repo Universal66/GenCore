@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -113,6 +114,8 @@ public final class GenCore extends JavaPlugin implements Listener {
 
                 LOGGER.info("Update pending.");
             }
+        } catch (UnknownHostException ex) {
+            LOGGER.warning("Omitting auto-update (no internet connection).");
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.severe("Cannot auto-update!");
