@@ -56,6 +56,12 @@ commands:
     permission: gencore.enderchest
     permission-message: "§7[§6EnderChest§7] §cError: §4No permission"
     description: Shows your enderchest.
+  invsee:
+    usage: /invsee
+    aliases: [isee, inv, inventorysee, inventory]
+    permission: gencore.invsee
+    permission-message: "§7[§6InvSee§7] §cError: §4No permission"
+    description: Shows someone's inventory.
 
 permissions:
   gencore.spawn:
@@ -79,4 +85,6 @@ permissions:
   gencore.enderchest:
     default: op
   gencore.enderchest.others:
+    default: op
+  gencore.invsee:
     default: op
