@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -282,6 +283,9 @@ public final class GenCore extends JavaPlugin implements Listener {
             event.getPlayer().sendMessage(config.getString("client_join_message.value"));
         }
 
+        if (config.getBoolean("join_message.custom"))
+            event.setJoinMessage(config.getString("join_message.value").replace("%player%", event.getPlayer().getName().replace("§", "&")));
+
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             try {
                 event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
@@ -289,6 +293,12 @@ public final class GenCore extends JavaPlugin implements Listener {
                 // That shouldn't happen
             }
         });
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        if (config.getBoolean("quit_message.custom"))
+            event.setQuitMessage(config.getString("quit_message.value").replace("%player%", event.getPlayer().getName().replace("§", "&")));
     }
 
     @Override

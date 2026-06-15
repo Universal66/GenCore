@@ -12,3 +12,13 @@ client_join_message:
     §6▏ We hope you will have a great time!
     §6▏ §o(mc.example.com)
     §6▏ 
+
+join_message:
+  custom: true
+  value: |-
+    §a[ + ]§2 %player%§7 joined
+
+quit_message:
+  custom: true
+  value: |-
+    §c[ - ]§4 %player%§7 quit
