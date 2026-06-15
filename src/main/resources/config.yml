@@ -13,6 +13,12 @@ client_join_message:
     §6▏ §o(mc.example.com)
     §6▏ 
 
+client_join_sound:
+  enabled: false
+  sound: item.honey_bottle.drink
+  volume: 1
+  pitch: 1.3
+
 join_message:
   custom: true
   value: |-
