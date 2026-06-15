@@ -27,6 +27,12 @@ commands:
     permission: gencore.generator
     permission-message: "§7[§6Generator§7] §cError: §4No permission"
     description: Gives you a block that generates a generator 2 blocks above it.
+  up:
+    usage: /up <height>
+    aliases: [goup, tpup, teleportup]
+    permission: gencore.up
+    permission-message: "§7[§6Up§7] §cError: §4No permission"
+    description: Teleports you an amount of blocks up.
 
 permissions:
   gencore.spawn:
@@ -36,4 +42,6 @@ permissions:
   gencore.setspawn:
     default: op
   gencore.generator:
+    default: op
+  gencore.up:
     default: op
