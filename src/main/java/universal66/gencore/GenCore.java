@@ -1,7 +1,15 @@
 package universal66.gencore;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-public final class GenCore extends JavaPlugin {
+public final class GenCore extends JavaPlugin implements Listener {
     private static final Logger LOGGER = PluginLogger.getLogger("GenCore");
     private Runnable updatePending = null;
 
@@ -134,6 +142,74 @@ public final class GenCore extends JavaPlugin {
         }
 
         return "";
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (command.getName().equals("spawn")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.spawn")) {
+                    sender.sendMessage("§7[§6SetSpawn§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (player.hasPermission("gencore.spawn.others")) {
+                    if (args.length >= 1) {
+                        var name = args[0];
+                        var target = getServer().getPlayer(name);
+
+                        if (target != null) {
+                            target.teleport(target.getWorld().getSpawnLocation());
+                            sender.sendMessage("§7[§6SetSpawn§7] §aTeleported §e" + target.getName().replace("§", "") + "§a to spawn.");
+                            return true;
+                        }
+                    }
+                }
+
+                player.teleport(player.getWorld().getSpawnLocation());
+                sender.sendMessage("§7[§6SetSpawn§7] §aTeleported to spawn.");
+            } else {
+                sender.sendMessage("§7[§6SetSpawn§7] §cOnly executable by players");
+            }
+
+            return true;
+        } else if (command.getName().equals("setspawn")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.setspawn")) {
+                    sender.sendMessage("§7[§6SetSpawn§7] §cError: §4No permission");
+                    return true;
+                }
+
+                player.getWorld().setSpawnLocation(player.getLocation());
+                sender.sendMessage("§7[§6SetSpawn§7] §aSet the spawn location of your world.");
+            } else {
+                sender.sendMessage("§7[§6SetSpawn§7] §cOnly executable by players");
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        try {
+            event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
+        } catch (NullPointerException ignored) {
+            // That shouldn't happen
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+            try {
+                event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
+            } catch (NullPointerException ignored) {
+                // That shouldn't happen
+            }
+        });
     }
 
     @Override

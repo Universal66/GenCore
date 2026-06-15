@@ -7,3 +7,25 @@ api-version: '26.1'
 load: STARTUP
 
 authors: [ Universal66 ]
+
+commands:
+  spawn:
+    usage: /spawn
+    aliases: spawntp, tpspawn
+    permission: gencore.spawn
+    permission-message: "§7[§6SetSpawn§7] §cError: §4No permission"
+    description: Teleports you to spawn.
+  setspawn:
+    usage: /setspawn
+    aliases: spawnset
+    permission: gencore.setspawn
+    permission-message: "§7[§6SetSpawn§7] §cError: §4No permission"
+    description: Sets the spawn location.
+
+permissions:
+  gencore.spawn:
+    default: true
+  gencore.spawn.others:
+    default: op
+  gencore.setspawn:
+    default: op
