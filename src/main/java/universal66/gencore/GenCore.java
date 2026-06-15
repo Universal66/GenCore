@@ -219,6 +219,11 @@ public final class GenCore extends JavaPlugin implements Listener {
                     return true;
                 }
 
+                if (args.length < 1) {
+                    sender.sendMessage("§7[§6Generator§7] §7Usage: §n/generator <block>");
+                    return true;
+                }
+
                 var block = String.join(" ", args);
 
                 var cmdBlock = new ItemStack(Material.REPEATING_COMMAND_BLOCK);
