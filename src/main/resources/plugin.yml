@@ -1,0 +1,9 @@
+name: GenCore
+description: $description
+version: '${version}'
+
+main: universal66.gencore.GenCore
+api-version: '26.1'
+load: STARTUP
+
+authors: [ Universal66 ]
