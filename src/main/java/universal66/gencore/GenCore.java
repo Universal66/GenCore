@@ -255,7 +255,7 @@ public final class GenCore extends JavaPlugin implements Listener {
                 }
 
                 if (args.length < 1) {
-                    sender.sendMessage("§7[§6Up§7] §8Usage: §n/up <amount>");
+                    sender.sendMessage("§7[§6Up§7] §7Usage: §n/up <amount>");
                     return true;
                 }
 
@@ -284,7 +284,7 @@ public final class GenCore extends JavaPlugin implements Listener {
                 }
 
                 if (args.length < 1) {
-                    sender.sendMessage("§7[§6Down§7] §8Usage: §n/down <amount>");
+                    sender.sendMessage("§7[§6Down§7] §7Usage: §n/down <amount>");
                     return true;
                 }
 
@@ -313,7 +313,7 @@ public final class GenCore extends JavaPlugin implements Listener {
                 }
 
                 if (args.length != 0) {
-                    sender.sendMessage("§7[§6BanHammer§7] §8Usage: §n/banhammer");
+                    sender.sendMessage("§7[§6BanHammer§7] §7Usage: §n/banhammer");
                     return true;
                 }
 
