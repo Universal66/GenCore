@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -155,9 +156,15 @@ public final class GenCore extends JavaPlugin implements Listener {
         return "";
     }
 
+    private FileConfiguration config;
+
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+
+        config = getConfig();
         command_key = new NamespacedKey(this, "command");
+
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
@@ -271,6 +278,10 @@ public final class GenCore extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (config.getBoolean("client_join_message.enabled")) {
+            event.getPlayer().sendMessage(config.getString("client_join_message.value"));
+        }
+
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             try {
                 event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());

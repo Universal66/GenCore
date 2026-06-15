@@ -1,0 +1,14 @@
+client_join_message:
+  enabled: true
+  value: |-
+    §r
+    §r
+    §6▏ 
+    §6▏ Welcome to §nExampleGen§6!
+    §6▏ 
+    §6▏ §e🔗 Discord: §nhttps://discord.gg/xyz
+    §6▏ §e🔗 Youtube: §nhttps://youtube.com/@xyz
+    §6▏ 
+    §6▏ We hope you will have a great time!
+    §6▏ §o(mc.example.com)
+    §6▏ 
