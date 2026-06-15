@@ -74,5 +74,9 @@ permissions:
     default: op
   gencore.heal:
     default: op
+  gencore.heal.others:
+    default: op
   gencore.enderchest:
+    default: op
+  gencore.enderchest.others:
     default: op

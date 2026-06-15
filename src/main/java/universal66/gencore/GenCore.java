@@ -345,7 +345,7 @@ public final class GenCore extends JavaPlugin implements Listener {
                     return true;
                 }
 
-                if (args.length > 0) {
+                if (args.length > 0 && player.hasPermission("gencore.heal.others")) {
                     var plr = args[0];
                     if (!plr.isEmpty()) {
                         var target = getServer().getPlayer(plr);
@@ -376,7 +376,7 @@ public final class GenCore extends JavaPlugin implements Listener {
                     return true;
                 }
 
-                if (args.length > 0) {
+                if (args.length > 0 && player.hasPermission("gencore.enderchest.others")) {
                     var plr = args[0];
                     if (!plr.isEmpty()) {
                         var target = getServer().getPlayer(plr);
