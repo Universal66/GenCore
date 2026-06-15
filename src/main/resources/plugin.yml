@@ -11,7 +11,7 @@ authors: [ Universal66 ]
 commands:
   spawn:
     usage: /spawn
-    aliases: spawntp, tpspawn
+    aliases: [spawntp, tpspawn]
     permission: gencore.spawn
     permission-message: "§7[§6SetSpawn§7] §cError: §4No permission"
     description: Teleports you to spawn.
