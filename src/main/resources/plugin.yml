@@ -52,7 +52,7 @@ commands:
     description: Restores your health and hunger.
   enderchest:
     usage: /enderchest
-    aliases: [enderchest, ec, echest]
+    aliases: [ec, echest]
     permission: gencore.enderchest
     permission-message: "§7[§6EnderChest§7] §cError: §4No permission"
     description: Shows your enderchest.
