@@ -83,7 +83,7 @@ permissions:
   gencore.heal.others:
     default: op
   gencore.enderchest:
-    default: op
+    default: true
   gencore.enderchest.others:
     default: op
   gencore.invsee:
