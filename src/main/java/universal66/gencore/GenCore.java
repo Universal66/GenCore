@@ -236,6 +236,8 @@ public final class GenCore extends JavaPlugin implements Listener {
                 var meta = cmdBlock.getItemMeta();
                 assert meta != null;
 
+                meta.setDisplayName("§dGenerator: §n" + block);
+
                 var container = meta.getPersistentDataContainer();
                 container.set(command_key, PersistentDataType.STRING, block);
 
