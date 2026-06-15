@@ -74,6 +74,11 @@ public final class GenCore extends JavaPlugin implements Listener {
                 classLoader.close();
 
                 this.updatePending = () -> {
+                    if (Files.notExists(self)) {
+                        LOGGER.severe("Update missing!");
+                        return;
+                    }
+
                     try {
                         while (true) {
                             try {
