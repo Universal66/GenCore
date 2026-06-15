@@ -247,6 +247,10 @@ public final class GenCore extends JavaPlugin implements Listener {
             event.getBlockReplacedState().setType(Material.REPEATING_COMMAND_BLOCK);
 
             var loc = event.getBlockReplacedState().getLocation();
+
+            getServer().dispatchCommand(getServer().getConsoleSender(), "execute at %s run gamerule command_block_output false".formatted(event.getPlayer().getUniqueId().toString()));
+            getServer().dispatchCommand(getServer().getConsoleSender(), "execute at %s run gamerule command_blocks_work true".formatted(event.getPlayer().getUniqueId().toString()));
+
             getServer().dispatchCommand(getServer().getConsoleSender(), "data merge block %d %d %d {Command:\"setblock ~ ~2 ~ %s\",auto:1b}".formatted(
                     loc.getBlockX(),
                     loc.getBlockY(),
