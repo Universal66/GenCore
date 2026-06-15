@@ -10,9 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginLogger;
@@ -28,6 +27,7 @@ import java.net.URLClassLoader;
 import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class GenCore extends JavaPlugin implements Listener {
@@ -165,6 +165,7 @@ public final class GenCore extends JavaPlugin implements Listener {
 
         config = getConfig();
         command_key = new NamespacedKey(this, "command");
+        banhammer_key = new NamespacedKey(this, "ban_hammer");
 
         Bukkit.getPluginManager().registerEvents(this, this);
     }
@@ -301,12 +302,46 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("banhammer")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.banhammer")) {
+                    sender.sendMessage("§7[§6BanHammer§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length != 0) {
+                    sender.sendMessage("§7[§6BanHammer§7] §8Usage: §n/banhammer");
+                    return true;
+                }
+
+                var item = new ItemStack(Material.GOLDEN_AXE);
+                var meta = item.getItemMeta();
+
+                assert meta != null;
+
+                meta.setUnbreakable(true);
+                meta.setRarity(ItemRarity.EPIC);
+                meta.setEnchantable(1);
+                meta.setEnchantmentGlintOverride(true);
+                meta.setDisplayName("§c§l§nBan Hammer");
+                meta.getPersistentDataContainer().set(banhammer_key, PersistentDataType.BOOLEAN, true);
+
+                item.setItemMeta(meta);
+
+                player.getInventory().addItem(item);
+                sender.sendMessage("§7[§6BanHammer§7] §aYou have been given a Ban Hammer.");
+            } else {
+                sender.sendMessage("§7[§6BanHammer§7] §cOnly executable by players");
+            }
+
+            return true;
         }
 
         return false;
     }
 
     private NamespacedKey command_key;
+    private NamespacedKey banhammer_key;
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -328,6 +363,26 @@ public final class GenCore extends JavaPlugin implements Listener {
                     loc.getBlockZ(),
                     meta.getPersistentDataContainer().get(command_key, PersistentDataType.STRING)
             ));
+        }
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEntityEvent event) {
+        if (event.getPlayer() != null) {
+            var inv = event.getPlayer().getInventory();
+            var item = inv.getItemInMainHand();
+
+            if (item != null) {
+                var meta = item.getItemMeta();
+                if (meta != null) {
+                    var pdc = meta.getPersistentDataContainer();
+                    if (pdc != null && Objects.equals(pdc.get(banhammer_key, PersistentDataType.BOOLEAN), true)) {
+                        if (event.getRightClicked() instanceof Player victim)
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban %s The Ban Hammer has struck!".formatted(victim.getUniqueId()));
+                    }
+                }
+            }
         }
     }
 

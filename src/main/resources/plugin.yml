@@ -39,6 +39,11 @@ commands:
     permission: gencore.down
     permission-message: "§7[§6Down§7] §cError: §4No permission"
     description: Teleports you an amount of blocks down.
+  banhammer:
+    usage: /banhammer
+    permission: gencore.banhammer
+    permission-message: "§7[§6BanHammer§7] §cError: §4No permission"
+    description: Gives you an item, that when clicked on a player, bans it from the server.
 
 permissions:
   gencore.spawn:
@@ -52,4 +57,6 @@ permissions:
   gencore.up:
     default: op
   gencore.down:
+    default: op
+  gencore.banhammer:
     default: op
