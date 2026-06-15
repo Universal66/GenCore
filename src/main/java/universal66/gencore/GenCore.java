@@ -169,6 +169,7 @@ public final class GenCore extends JavaPlugin implements Listener {
         config = getConfig();
         command_key = new NamespacedKey(this, "command");
         banhammer_key = new NamespacedKey(this, "ban_hammer");
+        voucher_key = new NamespacedKey(this, "voucher");
 
         Bukkit.getPluginManager().registerEvents(this, this);
     }
@@ -425,6 +426,36 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("voucher")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.voucher")) {
+                    sender.sendMessage("§7[§6Voucher§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length < 1) {
+                    sender.sendMessage("§7[§6Voucher§7] §7Usage: §n/voucher <rank>");
+                    return true;
+                }
+
+                var rank = args[0];
+                var voucher = new ItemStack(Material.PAPER);
+
+                var meta = voucher.getItemMeta();
+                assert meta != null;
+
+                var container = meta.getPersistentDataContainer();
+                container.set(voucher_key, PersistentDataType.STRING, rank);
+
+                voucher.setItemMeta(meta);
+                player.getInventory().addItem(voucher);
+
+                sender.sendMessage("§7[§6Voucher§7] §aYou have been given a voucher for §b" + rank + "§a.");
+            } else {
+                sender.sendMessage("§7[§6Heal§7] §cOnly executable by players");
+            }
+
+            return true;
         }
 
         return false;
@@ -432,6 +463,7 @@ public final class GenCore extends JavaPlugin implements Listener {
 
     private NamespacedKey command_key;
     private NamespacedKey banhammer_key;
+    private NamespacedKey voucher_key;
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -471,6 +503,31 @@ public final class GenCore extends JavaPlugin implements Listener {
                         if (event.getRightClicked() instanceof Player victim)
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban %s The Ban Hammer has struck!".formatted(victim.getUniqueId()));
                     }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getItem() != null && (event.getClickedBlock() == null || event.getClickedBlock().getLocation().distanceSquared(event.getPlayer().getLocation()) > 7)) {
+            var item = event.getItem();
+            var meta = item.getItemMeta();
+
+            if (meta != null) {
+                var pdc = meta.getPersistentDataContainer();
+                if (pdc != null && pdc.has(voucher_key, PersistentDataType.STRING)) {
+                    event.getPlayer().getInventory().remove(item);
+
+                    var rank = pdc.get(voucher_key, PersistentDataType.STRING);
+
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user %s parent set %s".formatted(
+                            event.getPlayer().getUniqueId(),
+                            rank
+                    ));
+
+                    event.getPlayer().sendMessage("§7[§6Voucher§7] §aYou have redeemed a voucher for §b" + rank + "§a.");
                 }
             }
         }

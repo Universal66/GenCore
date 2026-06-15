@@ -62,6 +62,12 @@ commands:
     permission: gencore.invsee
     permission-message: "§7[§6InvSee§7] §cError: §4No permission"
     description: Shows someone's inventory.
+  voucher:
+    usage: /voucher
+    aliases: [makevoucher, givevoucher, grantvoucher, createvoucher, rankvoucher]
+    permission: gencore.voucher
+    permission-message: "§7[§6Voucher§7] §cError: §4No permission"
+    description: Gives you a special item, that when clicked, gives you a rank.
 
 permissions:
   gencore.spawn:
