@@ -272,6 +272,35 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("down")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.down")) {
+                    sender.sendMessage("§7[§6Down§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length < 1) {
+                    sender.sendMessage("§7[§6Down§7] §8Usage: §n/down <amount>");
+                    return true;
+                }
+
+                int num;
+
+                var arg = args[0];
+                try {
+                    num = Integer.parseInt(arg);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage("§7[§6Down§7] §7Usage: §n/down <amount>");
+                    return true;
+                }
+
+                player.teleport(player.getLocation().subtract(0, num, 0));
+                sender.sendMessage("§7[§6Down§7] §aTeleported §b" + num + "§a blocks down.");
+            } else {
+                sender.sendMessage("§7[§6Down§7] §cOnly executable by players");
+            }
+
+            return true;
         }
 
         return false;

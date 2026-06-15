@@ -33,6 +33,12 @@ commands:
     permission: gencore.up
     permission-message: "§7[§6Up§7] §cError: §4No permission"
     description: Teleports you an amount of blocks up.
+  down:
+    usage: /down <height>
+    aliases: [godown, tpdown, teleportdown]
+    permission: gencore.down
+    permission-message: "§7[§6Down§7] §cError: §4No permission"
+    description: Teleports you an amount of blocks down.
 
 permissions:
   gencore.spawn:
@@ -44,4 +50,6 @@ permissions:
   gencore.generator:
     default: op
   gencore.up:
+    default: op
+  gencore.down:
     default: op
