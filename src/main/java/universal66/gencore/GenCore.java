@@ -1,5 +1,6 @@
 package universal66.gencore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -157,6 +158,7 @@ public final class GenCore extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         command_key = new NamespacedKey(this, "command");
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     @Override
