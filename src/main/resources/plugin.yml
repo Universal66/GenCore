@@ -21,6 +21,12 @@ commands:
     permission: gencore.setspawn
     permission-message: "§7[§6SetSpawn§7] §cError: §4No permission"
     description: Sets the spawn location.
+  generator:
+    usage: /generator <block>
+    aliases: [gen, makegen, makegenerator, creategen, creategenerator, givegen, givegenerator]
+    permission: gencore.generator
+    permission-message: "§7[§6Generator§7] §cError: §4No permission"
+    description: Gives you a block that generates a generator 2 blocks above it.
 
 permissions:
   gencore.spawn:
@@ -28,4 +34,6 @@ permissions:
   gencore.spawn.others:
     default: op
   gencore.setspawn:
+    default: op
+  gencore.generator:
     default: op

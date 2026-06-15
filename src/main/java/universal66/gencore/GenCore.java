@@ -1,12 +1,17 @@
 package universal66.gencore;
 
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -145,6 +150,11 @@ public final class GenCore extends JavaPlugin implements Listener {
     }
 
     @Override
+    public void onEnable() {
+        command_key = new NamespacedKey(this, "command");
+    }
+
+    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals("spawn")) {
             if (sender instanceof Player player) {
@@ -187,9 +197,56 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("generator")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.generator")) {
+                    sender.sendMessage("§7[§6Generator§7] §cError: §4No permission");
+                    return true;
+                }
+
+                var block = String.join(" ", args);
+
+                var cmdBlock = new ItemStack(Material.REPEATING_COMMAND_BLOCK);
+
+                var meta = cmdBlock.getItemMeta();
+                assert meta != null;
+
+                var container = meta.getPersistentDataContainer();
+                container.set(command_key, PersistentDataType.STRING, block);
+
+                cmdBlock.setItemMeta(meta);
+                player.getInventory().addItem(cmdBlock);
+
+                sender.sendMessage("§7[§6Generator§7] §aYou have been given a generator block for §b" + block + "§a.");
+            } else {
+                sender.sendMessage("§7[§6Generator§7] §cOnly executable by players");
+            }
+
+            return true;
         }
 
         return false;
+    }
+
+    private NamespacedKey command_key;
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        var meta = event.getItemInHand().getItemMeta();
+        assert meta != null;
+        if (meta.getPersistentDataContainer().has(command_key)) {
+            event.setCancelled(true);
+
+            event.getBlockReplacedState().setType(Material.REPEATING_COMMAND_BLOCK);
+
+            var loc = event.getBlockReplacedState().getLocation();
+            getServer().dispatchCommand(getServer().getConsoleSender(), "data merge block %d %d %d {Command:\"setblock ~ ~2 ~ %s\",auto:1b}".formatted(
+                    loc.getBlockX(),
+                    loc.getBlockY(),
+                    loc.getBlockZ(),
+                    meta.getPersistentDataContainer().get(command_key, PersistentDataType.STRING)
+            ));
+        }
     }
 
     @EventHandler
