@@ -335,6 +335,37 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("heal")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.heal")) {
+                    sender.sendMessage("§7[§6Heal§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length > 0) {
+                    var plr = args[0];
+                    if (!plr.isEmpty()) {
+                        var target = getServer().getPlayer(plr);
+                        if (target != null) {
+                            target.setHealth(target.getMaxHealth());
+                            target.setFoodLevel(20);
+
+                            sender.sendMessage("§7[§6Heal§7] §aHealed §e" + target.getName().replace("§", "&") + "§a.");
+
+                            return true;
+                        }
+                    }
+                }
+
+                player.setHealth(player.getMaxHealth());
+                player.setFoodLevel(20);
+
+                sender.sendMessage("§7[§6Heal§7] §aYou have been healed.");
+            } else {
+                sender.sendMessage("§7[§6Heal§7] §cOnly executable by players");
+            }
+
+            return true;
         }
 
         return false;

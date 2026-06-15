@@ -44,6 +44,12 @@ commands:
     permission: gencore.banhammer
     permission-message: "§7[§6BanHammer§7] §cError: §4No permission"
     description: Gives you an item, that when clicked on a player, bans it from the server.
+  heal:
+    usage: /heal
+    aliases: [regenerate]
+    permission: gencore.heal
+    permission-message: "§7[§6Heal§7] §cError: §4No permission"
+    description: Restores your health and hunger.
 
 permissions:
   gencore.spawn:
@@ -59,4 +65,6 @@ permissions:
   gencore.down:
     default: op
   gencore.banhammer:
+    default: op
+  gencore.heal:
     default: op
