@@ -39,9 +39,8 @@ public final class GenCore extends JavaPlugin {
             var newVersion = getPropertyFromYAML(classLoader.getResourceAsStream("plugin.yml"), "version");
             var oldVersion = "1.0";
 
-            classLoader.close();
-
             if (newVersion.equalsIgnoreCase(oldVersion)) {
+                classLoader.close();
                 Files.delete(path);
                 LOGGER.warning("No new update available.");
             } else {
@@ -50,6 +49,16 @@ public final class GenCore extends JavaPlugin {
                     LOGGER.severe("Self plugin JAR couldn't be found!");
                     return;
                 }
+
+                try {
+                    Class<?> cls = classLoader.loadClass("universal66.gencore.UpdateDynamic");
+                    var method = cls.getDeclaredMethod("any");
+                    method.invoke(null);
+                } catch (Exception e) {
+//                    LOGGER.warning("Failed to execute on-update code.");
+                }
+
+                classLoader.close();
 
                 this.updatePending = () -> {
                     try {
@@ -75,7 +84,7 @@ public final class GenCore extends JavaPlugin {
 
                         Files.move(path, self);
 
-                        LOGGER.info("Update succesful.");
+                        LOGGER.info("Update successful.");
                     } catch (IOException e) {
                         LOGGER.severe("Failed to update!");
                     }
