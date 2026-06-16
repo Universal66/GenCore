@@ -750,15 +750,15 @@ public final class GenCore extends JavaPlugin implements Listener {
             } catch (NullPointerException ignored) {
                 // That shouldn't happen
             }
-        });
 
-        if (config.getBoolean("client_join_sound.enabled"))
-            event.getPlayer().playSound(
-                    event.getPlayer().getLocation(),
-                    config.getString("client_join_sound.sound"),
-                    (float) config.getDouble("client_join_sound.volume"),
-                    (float) config.getDouble("client_join_sound.pitch")
-            );
+            if (config.getBoolean("client_join_sound.enabled"))
+                event.getPlayer().playSound(
+                        event.getPlayer().getLocation(),
+                        config.getString("client_join_sound.sound"),
+                        (float) config.getDouble("client_join_sound.volume"),
+                        (float) config.getDouble("client_join_sound.pitch")
+                );
+        });
     }
 
     @EventHandler
