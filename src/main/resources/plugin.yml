@@ -68,6 +68,12 @@ commands:
     permission: gencore.voucher
     permission-message: "§7[§6Voucher§7] §cError: §4No permission"
     description: Gives you a special item, that when clicked, gives you a rank.
+  tools:
+    usage: /tools
+    aliases: [maketools, givetools, createtools]
+    permission: gencore.tools
+    permission-message: "§7[§6Tools§7] §cError: §4No permission"
+    description: Gives you a standard toolset of the specified material with unbreakability.
 
 permissions:
   gencore.spawn:
@@ -93,4 +99,6 @@ permissions:
   gencore.enderchest.others:
     default: op
   gencore.invsee:
+    default: op
+  gencore.tools:
     default: op

@@ -17,6 +17,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,6 +29,8 @@ import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -395,7 +398,7 @@ public final class GenCore extends JavaPlugin implements Listener {
                 player.openInventory(player.getEnderChest());
                 sender.sendMessage("§7[§6EnderChest§7] §aYour enderchest has been opened.");
             } else {
-                sender.sendMessage("§7[§6Heal§7] §cOnly executable by players");
+                sender.sendMessage("§7[§6EnderChest§7] §cOnly executable by players");
             }
 
             return true;
@@ -424,7 +427,7 @@ public final class GenCore extends JavaPlugin implements Listener {
 
                 sender.sendMessage("§7[§6InvSee§7] §cError: §4Player not found");
             } else {
-                sender.sendMessage("§7[§6Heal§7] §cOnly executable by players");
+                sender.sendMessage("§7[§6InvSee§7] §cOnly executable by players");
             }
 
             return true;
@@ -454,13 +457,130 @@ public final class GenCore extends JavaPlugin implements Listener {
 
                 sender.sendMessage("§7[§6Voucher§7] §aYou have been given a voucher for §b" + rank + "§a.");
             } else {
-                sender.sendMessage("§7[§6Heal§7] §cOnly executable by players");
+                sender.sendMessage("§7[§6Voucher§7] §cOnly executable by players");
+            }
+
+            return true;
+        } else if (command.getName().equals("tools")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.tools")) {
+                    sender.sendMessage("§7[§6Tools§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length < 1) {
+                    sender.sendMessage("§7[§6Tools§7] §7Usage: §n/tools <wood, stone, iron, gold, netherite, copper>");
+                    return true;
+                }
+
+                final var material = new String[1];
+                final ArrayList<Material> toolset;
+
+                try {
+                    material[0] = args[0].toLowerCase();
+                    toolset = new ArrayList<>() {{
+                        if (material[0].startsWith("wood")) {
+                            material[0] = "wood";
+
+                            add(Material.WOODEN_SWORD);
+                            add(Material.WOODEN_PICKAXE);
+                            add(Material.WOODEN_AXE);
+                            add(Material.WOODEN_SHOVEL);
+                            add(Material.WOODEN_HOE);
+                            add(Material.WOODEN_SPEAR);
+                        } else if (material[0].startsWith("stone")) {
+                            material[0] = "stone";
+
+                            add(Material.STONE_SWORD);
+                            add(Material.STONE_PICKAXE);
+                            add(Material.STONE_AXE);
+                            add(Material.STONE_SHOVEL);
+                            add(Material.STONE_HOE);
+                            add(Material.STONE_SPEAR);
+                        } else if (material[0].startsWith("iron")) {
+                            material[0] = "iron";
+
+                            add(Material.IRON_SWORD);
+                            add(Material.IRON_PICKAXE);
+                            add(Material.IRON_AXE);
+                            add(Material.IRON_SHOVEL);
+                            add(Material.IRON_HOE);
+                            add(Material.IRON_SPEAR);
+                        } else if (material[0].startsWith("gold")) {
+                            material[0] = "gold";
+
+                            add(Material.GOLDEN_SWORD);
+                            add(Material.GOLDEN_PICKAXE);
+                            add(Material.GOLDEN_AXE);
+                            add(Material.GOLDEN_SHOVEL);
+                            add(Material.GOLDEN_HOE);
+                            add(Material.GOLDEN_SPEAR);
+                        } else if (material[0].startsWith("dia")) {
+                            material[0] = "diamond";
+
+                            add(Material.DIAMOND_SWORD);
+                            add(Material.DIAMOND_PICKAXE);
+                            add(Material.DIAMOND_AXE);
+                            add(Material.DIAMOND_SHOVEL);
+                            add(Material.DIAMOND_HOE);
+                            add(Material.DIAMOND_SPEAR);
+                        } else if (material[0].startsWith("net")) {
+                            material[0] = "netherite";
+
+                            add(Material.NETHERITE_SWORD);
+                            add(Material.NETHERITE_PICKAXE);
+                            add(Material.NETHERITE_AXE);
+                            add(Material.NETHERITE_SHOVEL);
+                            add(Material.NETHERITE_HOE);
+                            add(Material.NETHERITE_SPEAR);
+                        } else if (material[0].startsWith("copper")) {
+                            material[0] = "copper";
+
+                            add(Material.COPPER_SWORD);
+                            add(Material.COPPER_PICKAXE);
+                            add(Material.COPPER_AXE);
+                            add(Material.COPPER_SHOVEL);
+                            add(Material.COPPER_HOE);
+                            add(Material.COPPER_SPEAR);
+                        } else {
+                            throw new RuntimeException();
+                        }
+                    }};
+                } catch (RuntimeException e) {
+                    sender.sendMessage("§7[§6Tools§7] §7Usage: §n/tools <wood, stone, iron, gold, netherite, copper>");
+                    return true;
+                }
+
+                for (var tool : toolset) {
+                    var stack = new ItemStack(tool);
+                    var meta = stack.getItemMeta();
+
+                    meta.setUnbreakable(true);
+
+                    stack.setItemMeta(meta);
+                    player.getInventory().addItem(stack);
+                }
+
+                sender.sendMessage("§7[§6Tools§7] §aYou have been given a §b" + material[0] + "§a toolset.");
+            } else {
+                sender.sendMessage("§7[§6Tools§7] §cOnly executable by players");
             }
 
             return true;
         }
 
         return false;
+    }
+
+    private static final List<String> TOOLSETS = List.of("wood", "stone", "iron", "gold", "netherite", "copper");
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if (command.getName().equals("tools"))
+            return TOOLSETS;
+
+        return null;
     }
 
     private NamespacedKey command_key;
