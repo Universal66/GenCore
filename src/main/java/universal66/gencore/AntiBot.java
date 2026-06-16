@@ -32,6 +32,19 @@ public final class AntiBot implements Listener {
             HooligansAlt7
             xianyvgan
             Panpj2011
+            6tar
+            lazerbread
+            xStrqfje
+            pekis542
+            urpoint
+            Pugifying
+            godblesseddd
+            Manequin
+            SatinyBog680024
+            Ingaroemil
+            keairr
+            NockPC
+            ReminiscenceSMP
             """.trim().replace("\r\n", "\n").replace("\r", "\n").split("\n")).toList();
 
     @EventHandler
