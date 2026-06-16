@@ -496,6 +496,42 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("shine")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.shine")) {
+                    sender.sendMessage("§7[§6Shine§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length != 0) {
+                    sender.sendMessage("§7[§6Shine§7] §7Usage: §n/shine");
+                    return true;
+                }
+
+                var item = player.getInventory().getItemInMainHand();
+                if (item == null || item.getType() == Material.AIR) {
+                    sender.sendMessage("§7[§6Shine§7] §cError: §4You're not holding any item");
+                    return true;
+                }
+
+                var meta = item.getItemMeta();
+                assert meta != null;
+
+                boolean value = meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride()
+                                    ? false
+                                    : true;
+
+                meta.setEnchantmentGlintOverride(value);
+
+                item.setItemMeta(meta);
+                player.getInventory().setItemInMainHand(item);
+
+                sender.sendMessage("§7[§6Shine§7] §aYour item's shining has been §b" + (value ? "enabled" : "disabled") + "§a.");
+            } else {
+                sender.sendMessage("§7[§6Shine§7] §cOnly executable by players");
+            }
+
+            return true;
         } else if (command.getName().equals("tools")) {
             if (sender instanceof Player player) {
                 if (!player.hasPermission("gencore.tools")) {

@@ -80,6 +80,12 @@ commands:
     permission: gencore.rename
     permission-message: "§7[§6Rename§7] §cError: §4No permission"
     description: Renames your held item as specified.
+  shine:
+    usage: /shine
+    aliases: [setshine, itemshine, shineitem, glow, itemglow, itemglint, setglint, setglow, glowitem, glintitem]
+    permission: gencore.shine
+    permission-message: "§7[§6Shine§7] §cError: §4No permission"
+    description: Toggles shining of your held item.
 
 permissions:
   gencore.spawn:
@@ -109,4 +115,6 @@ permissions:
   gencore.tools:
     default: op
   gencore.rename:
+    default: op
+  gencore.shine:
     default: op
