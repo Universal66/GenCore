@@ -28,3 +28,7 @@ quit_message:
   custom: true
   value: |-
     §c[ - ]§4 %player%§7 quit
+
+#-#            This does NOT stop all bot attacks!            #-#
+#-# It's a basic layer of detection, enough for some servers. #-#
+anti_bot: true

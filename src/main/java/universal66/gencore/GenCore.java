@@ -175,6 +175,9 @@ public final class GenCore extends JavaPlugin implements Listener {
         voucher_key = new NamespacedKey(this, "voucher");
 
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        if (config.getBoolean("anti_bot"))
+            Bukkit.getPluginManager().registerEvents(new AntiBot(), this);
     }
 
     @Override
