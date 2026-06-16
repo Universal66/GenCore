@@ -461,6 +461,41 @@ public final class GenCore extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (command.getName().equals("rename")) {
+            if (sender instanceof Player player) {
+                if (!player.hasPermission("gencore.rename")) {
+                    sender.sendMessage("§7[§6Rename§7] §cError: §4No permission");
+                    return true;
+                }
+
+                if (args.length < 1) {
+                    sender.sendMessage("§7[§6Rename§7] §7Usage: §n/rename <text>");
+                    return true;
+                }
+
+                var item = player.getInventory().getItemInMainHand();
+                if (item == null || item.getType() == Material.AIR) {
+                    sender.sendMessage("§7[§6Rename§7] §cError: §4You're not holding any item");
+                    return true;
+                }
+
+                var meta = item.getItemMeta();
+                assert meta != null;
+
+                String name = String.join(" ", args)
+                                    .replace("&", "§");
+
+                meta.setDisplayName(name);
+
+                item.setItemMeta(meta);
+                player.getInventory().setItemInMainHand(item);
+
+                sender.sendMessage("§7[§6Rename§7] §aYour item has been renamed to §b" + name + "§a.");
+            } else {
+                sender.sendMessage("§7[§6Rename§7] §cOnly executable by players");
+            }
+
+            return true;
         } else if (command.getName().equals("tools")) {
             if (sender instanceof Player player) {
                 if (!player.hasPermission("gencore.tools")) {

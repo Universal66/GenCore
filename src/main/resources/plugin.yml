@@ -74,6 +74,12 @@ commands:
     permission: gencore.tools
     permission-message: "§7[§6Tools§7] §cError: §4No permission"
     description: Gives you a standard toolset of the specified material with unbreakability.
+  rename:
+    usage: /rename
+    aliases: [setname, itemname, itemrename, nameitem]
+    permission: gencore.rename
+    permission-message: "§7[§6Rename§7] §cError: §4No permission"
+    description: Renames your held item as specified.
 
 permissions:
   gencore.spawn:
@@ -101,4 +107,6 @@ permissions:
   gencore.invsee:
     default: op
   gencore.tools:
+    default: op
+  gencore.rename:
     default: op
